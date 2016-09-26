@@ -1,9 +1,21 @@
 // YOUR CODE HERE:
 
 var app = {};
+var loadedMessages = [];
 
 app.init = function() {
-  // body...
+  $.ajax({
+    url: 'https://api.parse.com/1/classes/messages',
+    type: 'GET',
+    contentType: 'application/json',
+    success: function(data) {
+      loadedMessages = data.results;
+      loadedMessages.forEach(function(item) { app.renderMessage(item); });
+    },
+    error: function(data) {
+      console.error('messages failed!');
+    }
+  });
 };
 
 // var message = {
@@ -34,7 +46,9 @@ app.fetch = function() {
     type: 'GET',
     contentType: 'application/json',
     success: function(data) {
-      console.log('messages recieved', data);
+      loadedMessages = data.results;
+      app.clearMessages();
+      loadedMessages.forEach(function(item) { app.renderMessage(item); });
     },
     error: function(data) {
       Console.error('messages failed!');
@@ -47,9 +61,59 @@ app.clearMessages = function() {
 };
 
 app.renderMessage = function(message) {
-  $('#chats').prepend('<div>' + message.text + '</div>');
+  var display = $('<div></div>');
+  display.text(message.text).html();
+  $('#chats').prepend(display);
 };
 
 app.renderRoom = function(room) {
   $('#roomSelect').prepend('<li>' + room + '</li>');
 };
+
+$(document).ready(function () {
+  app.init();
+});
+
+// var populateMessages = function () {
+//   loadedMessages.forEach(function(item) { app.renderMessage(item); });
+// };
+
+// populateMessages();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
