@@ -76,7 +76,8 @@ app.renderMessage = function(message) {
 app.renderRoom = function(message) {
   if (rooms.indexOf(message.roomname) === -1) {
     rooms.push(message.roomname);
-    var room = $('<option>');
+    var room = $('<option value = ' + message.roomname + '>' + message.roomname + '</option>');
+    $('#dropdown').append(room);
   }
 };
 
