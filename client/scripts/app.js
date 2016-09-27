@@ -2,6 +2,7 @@
 
 var app = {};
 var loadedMessages = [];
+var rooms = [];
 
 app.init = function() {
   $.ajax({
@@ -12,7 +13,7 @@ app.init = function() {
       loadedMessages = data.results;
       loadedMessages.forEach(function(item) { 
         app.renderMessage(item);
-        // app.renderRoom(item); 
+        app.renderRoom(item); 
       });
     },
     error: function(data) {
@@ -73,7 +74,10 @@ app.renderMessage = function(message) {
 };
 
 app.renderRoom = function(message) {
-  $('#roomSelect').prepend('<li>' + message.roomname + '</li>');
+  if (rooms.indexOf(message.roomname) === -1) {
+    rooms.push(message.roomname);
+    var room = $('<option>');
+  }
 };
 
 $(document).ready(function () {
