@@ -70,7 +70,7 @@ app.renderMessage = function(message) {
   username.text(message.username).html();
   display.text(' ' + message.text).html();
   display.prepend(username);
-  $('#chats').prepend(display);
+  $('#chats').append(display);
 };
 
 app.renderRoom = function(message) {
@@ -86,6 +86,18 @@ $(document).ready(function () {
 
   $('.update').on('click', function () {
     app.fetch();
+  });
+
+  $('.submit').on('click', function () {
+    var input = $('input.send').val();
+    var name = window.location.search.split('=')[1];
+    var room = $('#dropdown option:selected').text();
+    var obj = {
+      username: name,
+      text: input,
+      roomname: room
+    };
+    app.send(obj);
   });
 });
 
