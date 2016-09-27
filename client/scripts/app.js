@@ -3,6 +3,7 @@
 var app = {};
 var loadedMessages = [];
 var rooms = [];
+var friends = [];
 
 app.init = function() {
   $.ajax({
@@ -66,8 +67,12 @@ app.clearMessages = function() {
 
 app.renderMessage = function(message) {
   var display = $('<div class="chat"></div>');
-  var username = $('<span class="username"></span>');
+  var username = $('<div class="username"></div>');
+  if (friends.indexOf(message.username) !== -1) {
+    display.addClass('friend');
+  }
   username.text(message.username).html();
+  display.data('user', message.username);
   display.text(' ' + message.text).html();
   display.prepend(username);
   $('#chats').append(display);
@@ -86,6 +91,16 @@ app.renderRoom = function(message) {
 
 $(document).ready(function () {
   app.init();
+
+  $('#chats').on('click', '.username', function() {
+    var name = $(this).text();
+    if (friends.indexOf(name) === -1) {
+      friends.push(name);
+    } else {
+      friends.splice(friends.indexOf(name), 1);
+    }
+    app.fetch();
+  });
 
   $('.update').on('click', function () {
     app.fetch();
@@ -118,41 +133,5 @@ var loadRoom = function() {
     app.renderMessage(message);
   });
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
