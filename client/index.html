@@ -28,7 +28,8 @@
       <h1>chatterbox</h1>
       <!-- Your HTML goes here! -->
       <form method="post">
-        <select id="dropdown" name="dropdown" onchange="changeHiddenInput(this)">
+        <select id="dropdown" name="dropdown" onchange="loadRoom()">
+          <option value='all'>All</option>
         </select>
         <br>
         <input class="send" type='text'></input>
