@@ -10,7 +10,10 @@ app.init = function() {
     contentType: 'application/json',
     success: function(data) {
       loadedMessages = data.results;
-      loadedMessages.forEach(function(item) { app.renderMessage(item); });
+      loadedMessages.forEach(function(item) { 
+        app.renderMessage(item);
+        // app.renderRoom(item); 
+      });
     },
     error: function(data) {
       console.error('messages failed!');
@@ -61,17 +64,24 @@ app.clearMessages = function() {
 };
 
 app.renderMessage = function(message) {
-  var display = $('<div></div>');
-  display.text(message.text).html();
+  var display = $('<div class="chat"></div>');
+  var username = $('<span class="username"></span>');
+  username.text(message.username).html();
+  display.text(' ' + message.text).html();
+  display.prepend(username);
   $('#chats').prepend(display);
 };
 
-app.renderRoom = function(room) {
-  $('#roomSelect').prepend('<li>' + room + '</li>');
+app.renderRoom = function(message) {
+  $('#roomSelect').prepend('<li>' + message.roomname + '</li>');
 };
 
 $(document).ready(function () {
   app.init();
+
+  $('.update').on('click', function () {
+    app.fetch();
+  });
 });
 
 // var populateMessages = function () {
